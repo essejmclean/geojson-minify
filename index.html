@@ -1,77 +1,164 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width" />
-	<title>GeoJSON minify</title>
-	<link rel="StyleSheet" href="style.css" type="text/css" />
-	<link rel="icon" href="data:image/svg+xml,%3Csvg width='640' height='640' overflow='auto' viewBox='-32 -32 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='oi-person'%3E%3Cpath d='m-32-32h64v64h-12v-24a4 4 0 0 0 -4 -4h-8a4 4 0 0 0 -4 4v24h-36zm44 27m-8 0a8 8 0 1 0 16 0 8 8 0 1 0-16 0' fill='%23fff'%3E%3C/path%3E%3C/mask%3E%3Cg id='oi-logo' fill='%23F9BC26'%3E%3Ccircle r='32' mask='url(%23oi-person)'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E" />
-	<script type="text/javascript" src="geojson-minify.js"></script>
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:site" content="@OpenInnovates">
-	<meta name="twitter:url" property="og:url" content="https://odileeds.github.io/geojson-minify/">
-	<meta name="twitter:title" property="og:title" content="GeoJSON Minify">
-	<meta name="twitter:description" property="og:description" content="Minify GeoJSON files on the web by truncating coordinates and removing properties.">
-	<meta name="twitter:image" property="og:image" content="https://open-innovations.org/resources/images/logos/oi-square-14.png">
-	<meta name="keywords" content="geojson,minify,minifier,optimise,shrink,reduce,mapping,coordinates">
-</head>
-<body>
-	<header>
-		<div class="b1-bg padded">
-			<div class="holder" style="text-align:center;">
-				<a href="https://open-innovations.org/"><img src="data:image/svg+xml,%3Csvg width='640' height='640' overflow='auto' viewBox='-32 -32 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='oi-person'%3E%3Cpath d='m-32-32h64v64h-12v-24a4 4 0 0 0 -4 -4h-8a4 4 0 0 0 -4 4v24h-36zm44 27m-8 0a8 8 0 1 0 16 0 8 8 0 1 0-16 0' fill='%23fff'%3E%3C/path%3E%3C/mask%3E%3Cg id='oi-logo' fill='%23F9BC26'%3E%3Ccircle r='32' mask='url(%23oi-person)'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E" width="100px" height="100px" style="margin-bottom:1em;" /></a>
-				<h1>GeoJSON Minify</h1>
-			</div>
-		</div>
-	</header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>GeoJSON minify</title>
+    <link rel="StyleSheet" href="style.css" type="text/css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg width='640' height='640' overflow='auto' viewBox='-32 -32 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='oi-person'%3E%3Cpath d='m-32-32h64v64h-12v-24a4 4 0 0 0 -4 -4h-8a4 4 0 0 0 -4 4v24h-36zm44 27m-8 0a8 8 0 1 0 16 0 8 8 0 1 0-16 0' fill='%23fff'%3E%3C/path%3E%3C/mask%3E%3Cg id='oi-logo' fill='%23F9BC26'%3E%3Ccircle r='32' mask='url(%23oi-person)'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E"
+    />
+    <script type="text/javascript" src="geojson-minify.js"></script>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@OpenInnovates" />
+    <meta
+      name="twitter:url"
+      property="og:url"
+      content="https://odileeds.github.io/geojson-minify/"
+    />
+    <meta name="twitter:title" property="og:title" content="GeoJSON Minify" />
+    <meta
+      name="twitter:description"
+      property="og:description"
+      content="Minify GeoJSON files on the web by truncating coordinates and removing properties."
+    />
+    <meta
+      name="twitter:image"
+      property="og:image"
+      content="https://open-innovations.org/resources/images/logos/oi-square-14.png"
+    />
+    <meta
+      name="keywords"
+      content="geojson,minify,minifier,optimise,shrink,reduce,mapping,coordinates"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="b1-bg padded">
+        <div class="holder" style="text-align: center">
+          <a href="https://open-innovations.org/"
+            ><img
+              src="data:image/svg+xml,%3Csvg width='640' height='640' overflow='auto' viewBox='-32 -32 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='oi-person'%3E%3Cpath d='m-32-32h64v64h-12v-24a4 4 0 0 0 -4 -4h-8a4 4 0 0 0 -4 4v24h-36zm44 27m-8 0a8 8 0 1 0 16 0 8 8 0 1 0-16 0' fill='%23fff'%3E%3C/path%3E%3C/mask%3E%3Cg id='oi-logo' fill='%23F9BC26'%3E%3Ccircle r='32' mask='url(%23oi-person)'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E"
+              width="100px"
+              height="100px"
+              style="margin-bottom: 1em"
+          /></a>
+          <h1>GeoJSON Minify</h1>
+        </div>
+      </div>
+    </header>
 
-	<div id="progressbar" class="done"><div class="progress-inner"></div></div>
-	<div id="main" class="tallpadded">
-		<div class="holder">
-				<p>A web-based GeoJSON minifier (compressor) to reduce file sizes and make web-mapping quicker. Assumes your <a href="https://geojson.org/">GeoJSON conforms to RFC 7946 (2016)</a> (that means the coordinates are in WGS 84).</p>
+    <div id="progressbar" class="done"><div class="progress-inner"></div></div>
+    <div id="main" class="tallpadded">
+      <div class="holder">
+        <p>
+          A web-based GeoJSON minifier (compressor) to reduce file sizes and
+          make web-mapping quicker. Assumes your
+          <a href="https://geojson.org/">GeoJSON conforms to RFC 7946 (2016)</a>
+          (that means the coordinates are in WGS 84).
+        </p>
 
+        <form
+          id="validation_form"
+          method="post"
+          enctype="multipart/form-data"
+          accept-charset="UTF-8"
+        >
+          <div id="drop_zone" class="dropzone">
+            <div class="helpertext">
+              Drop GeoJSON file here (or click to browse files)
+            </div>
+            <input
+              id="standard_files"
+              class="fileselect"
+              type="file"
+              title="browse"
+              name="files[]"
+              accept=".geojson, .json"
+            />
+            <div id="filedetails"></div>
+          </div>
+        </form>
+        <p>
+          <label for="precision">Coordinate precision</label>:
+          <input type="number" id="precision" value="5" min="0" max="21" /> d.p.
+          is roughly <span class="precision-metres"></span> at the Equator
+        </p>
+        <div id="loader"></div>
+        <div id="properties"></div>
+      </div>
+      <div id="results">
+        <div class="panel b6-bg">
+          <div class="holder">
+            <h3>Output</h3>
+            <textarea id="geojson"></textarea>
+            <div id="filesize"></div>
+            <p style="text-align: center; font-size: 1em">
+              <button type="button" id="save" class="seasonal">
+                Save minified GeoJSON
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-				<form id="validation_form" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-					<div id="drop_zone" class="dropzone">
-						<div class="helpertext">
-							Drop GeoJSON file here (or click to browse files)
-						</div>
-						<input id="standard_files" class="fileselect" type="file" title="browse" name="files[]" accept=".geojson, .json">
-						<div id="filedetails"></div>
-					</div>
-					</form>
-				<p><label for="precision">Coordinate precision</label>: <input type="number" id="precision" value="5" min="0" max="21" /> d.p. is roughly <span class="precision-metres"></span> at the Equator</p>
-				<div id="loader"></div>
-				<div id="properties"></div>
-		</div>
-		<div id="results">
+    <footer class="b1-bg">
+      <div class="holder">
+        <div class="tallpadded">
+          <h2 id="notes">Notes</h2>
+          <p>
+            At Open Innovations we often work with GeoJSON files for web mapping
+            (including making a tool that helps you
+            <a href="https://open-innovations.github.io/CSV2GeoJSON/"
+              >convert a CSV file into a GeoJSON file</a
+            >). A common issue we have is that GeoJSON files are often much
+            larger than they need to be. Quite a lot of the time this is down to
+            unnecessary coordinate precision. When people provide coordinates to
+            15 decimal places that is about a ten-billionth of a metre (at the
+            Equator) on the surface of the Earth. Do people really know their
+            coordinates to atomic precision? Probably not. If 1 metre resolution
+            is good enough then 5 decimal places are all that is required and
+            removing 10 digits per coordinate can reduce the file size quite a
+            bit (4 decimal places is roughly 10m resolution). Then there are
+            other issues like lots of white space that certainly can make things
+            more readable but can add quite a lot to a file download. This tool
+            aims to fix some of these common issues and produce smaller files.
+          </p>
+          <p>
+            We've given an approximate scale for the decimal precision on the
+            coordinates by using the equatorial radius for the Earth. This works
+            out about 111km per degree. Although latitude has roughly this scale
+            everywhere (it isn't quite because the Earth is an oblate spheroid),
+            longitude gets compressed towards the poles. That means that
+            truncating longitude will have better precision on-the-ground than
+            stated. For example, at 60&deg;N the precision in metres will be
+            twice as good e.g. 5 decimal places would be 1.1m at the Equator but
+            is 0.55m in the Shetlands.
+          </p>
+          <h3>Credits</h3>
+          <p>
+            Created by Stuart Lowe,
+            <a href="http://open-innovations.org/projects/">Open Innovations</a>
+            2022. MIT Licence. Find
+            <a href="https://github.com/open-innovations/geojson-minify"
+              >the code on Github</a
+            >
+            (or view source).
+          </p>
+        </div>
+      </div>
+    </footer>
 
-			<div class="panel b6-bg">
-				<div class="holder">
-					<h3>Output</h3>
-					<textarea id="geojson"></textarea>
-					<div id="filesize"></div>
-					<p style="text-align:center;font-size:1em;"><button type="button" id="save" class="seasonal">Save minified GeoJSON</button></p>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<footer class="b1-bg">
-		<div class="holder">
-			<div class="tallpadded">
-				<h2 id="notes">Notes</h2>
-				<p>At Open Innovations we often work with GeoJSON files for web mapping (including making a tool that helps you <a href="https://open-innovations.github.io/CSV2GeoJSON/">convert a CSV file into a GeoJSON file</a>). A common issue we have is that GeoJSON files are often much larger than they need to be. Quite a lot of the time this is down to unnecessary coordinate precision. When people provide coordinates to 15 decimal places that is about a ten-billionth of a metre (at the Equator) on the surface of the Earth. Do people really know their coordinates to atomic precision? Probably not. If 1 metre resolution is good enough then 5 decimal places are all that is required and removing 10 digits per coordinate can reduce the file size quite a bit (4 decimal places is roughly 10m resolution). Then there are other issues like lots of white space that certainly can make things more readable but can add quite a lot to a file download. This tool aims to fix some of these common issues and produce smaller files.</p>
-				<p>We've given an approximate scale for the decimal precision on the coordinates by using the equatorial radius for the Earth. This works out about 111km per degree. Although latitude has roughly this scale everywhere (it isn't quite because the Earth is an oblate spheroid), longitude gets compressed towards the poles. That means that truncating longitude will have better precision on-the-ground than stated. For example, at 60&deg;N the precision in metres will be twice as good e.g. 5 decimal places would be 1.1m at the Equator but is 0.55m in the Shetlands.</p>
-				<h3>Credits</h3>
-				<p>Created by Stuart Lowe, <a href="http://open-innovations.org/projects/">Open Innovations</a> 2022. MIT Licence. Find <a href="https://github.com/open-innovations/geojson-minify">the code on Github</a> (or view source).</p>
-			</div>
-		</div>
-	</footer>
-
-	<script src="https://open-innovations.org/resources/oi.log.js"></script>
-	<script>
-	OI.log.setup({'id':'open-innovations','target':['odileeds.github.io','open-innovations.github.io']}).add('action=view');
-	</script>
-</body>
+    <script src="https://open-innovations.org/resources/oi.log.js"></script>
+    <script>
+      OI.log
+        .setup({
+          id: "open-innovations",
+          target: ["odileeds.github.io", "open-innovations.github.io"],
+        })
+        .add("action=view");
+    </script>
+  </body>
 </html>

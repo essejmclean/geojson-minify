@@ -153,7 +153,8 @@
     for (f = 0; f < this.json.features.length; f++) {
       if (this.json.features[f].properties) {
         for (p in this.json.features[f].properties) {
-          if (this.json.features[f].properties[p]) {
+          // Check if the property exists, regardless of its value
+          if (this.json.features[f].properties.hasOwnProperty(p)) {
             if (!this.properties[p])
               this.properties[p] = { n: 0, b: 0, active: true };
             this.properties[p].n++;
@@ -211,6 +212,32 @@
       );
     }
 
+    function makeToggleAll(p, b) {
+      var id, li, lbl, btn, inp;
+      // Sanitize the property name for use as an ID
+      id = "toggle-all-properties";
+      li = document.createElement("li");
+      li.classList.add("seasonal");
+      li.setAttribute("title", p);
+      lbl = document.createElement("label");
+      lbl.setAttribute("for", id);
+      lbl.innerHTML = "<b>" + escapeHTML(p) + "</b>";
+      btn = document.createElement("button");
+      btn.classList.add("close");
+      btn.innerHTML = '<span aria-hidden="true">×</span>';
+      inp = document.createElement("input");
+      inp.setAttribute("type", "checkbox");
+      inp.setAttribute("checked", "checked");
+      inp.setAttribute("id", id);
+      li.appendChild(lbl);
+      li.appendChild(btn);
+      btn.appendChild(inp);
+      inp.addEventListener("change", function (e) {
+        _obj.toggleAllProperties(li);
+      });
+      return { li: li, inp: inp, btn: btn, p: p };
+    }
+
     ul = document.createElement("ul");
     ul.classList.add("toggles");
     props = this.properties;
@@ -228,14 +255,21 @@
       h3 = document.createElement("h3");
       h3.innerHTML = "Properties";
       document.getElementById("properties").appendChild(h3);
+      var toggleAll = makeToggleAll("Toggle All Properties");
+      ul.prepend(toggleAll.li);
+
       document.getElementById("properties").appendChild(ul);
     }
     return this.trimGeoJSON();
   };
   Minify.prototype.trimGeoJSON = function () {
-    var str, strstart, strend, f, p, prec, json, output;
+    var f, p, prec, json;
     // Get a copy of the JSON so we can manipulate it
     json = clone(this.json);
+
+    // Ensure the basic GeoJSON structure is maintained
+    if (!json.type) json.type = "FeatureCollection";
+    if (!json.features) json.features = [];
 
     // Remove any deselected properties
     for (f = 0; f < json.features.length; f++) {
@@ -248,53 +282,34 @@
       }
     }
 
-    // Convert it to a string
-    output = JSON.stringify(json);
-    // Find the part before "features" and after it
-    output.replace(/^(.*,"features":\[).*(\]\})$/, function (m, p1, p2) {
-      strstart = p1;
-      strend = p2;
-      return p1;
-    });
-    str = "";
-
     // Get the precision to use
-    prec = document.getElementById("precision").value;
-    var re = RegExp("(-?[0-9]+.[0-9]+)", "g");
+    prec = parseInt(document.getElementById("precision").value);
 
-    // Loop over the features and stringify each separately (this lets us put newlines between them)
-    for (f = 0; f < json.features.length; f++) {
-      tstr = JSON.stringify(json.features[f]);
-      // Limit coordinate precision to the coordinates variable
-      tstr = tstr.replace(
-        /("coordinates" ?:)([^\"\}]*)/g,
-        function (m, p1, p2) {
-          var rtn = p1;
-          if (prec > 0) {
-            p2 = p2.replace(re, function (m, p3) {
-              if (p3.indexOf(".") < 0) return p3;
-              else return parseFloat(p3).toFixed(prec);
-            });
-            // Remove trailing zeros that don't add anything useful
-            p2 = p2.replace(
-              /([0-9]\.[0-9]+?)0+(\s*[\,\]])/g,
-              function (m, p3, p4) {
-                return p3 + p4;
-              }
-            );
-          } else {
-            p2 = p2.replace(/([,\[] ?\-?[0-9])\.[0-9]+/g, function (m, p3) {
-              return p3;
-            });
-          }
-          return rtn + p2;
-        }
-      );
-      str += (str ? ",\n" : "") + tstr;
+    // Function to adjust coordinate precision
+    function adjustPrecision(coord) {
+      if (Array.isArray(coord)) {
+        return coord.map(adjustPrecision);
+      } else if (typeof coord === "number") {
+        return prec > 0 ? parseFloat(coord.toFixed(prec)) : Math.round(coord);
+      }
+      return coord;
     }
 
-    // Build the output
-    output = strstart + "\n" + str + "\n" + strend;
+    // Adjust precision for all features
+    json.features.forEach((feature) => {
+      if (feature.geometry && feature.geometry.coordinates) {
+        feature.geometry.coordinates = adjustPrecision(
+          feature.geometry.coordinates
+        );
+      }
+    });
+
+    // Stringify the entire object
+    var output = JSON.stringify(json);
+
+    // Minify the output by removing whitespace
+    output = output.replace(/\s+/g, "");
+
     document.getElementById("geojson").innerHTML = output;
     // Save the output
     this.output = output;
@@ -326,6 +341,29 @@
       this.properties[p].toggle.li.classList.add(oncls.split(/ /));
     }
     return this.trimGeoJSON();
+  };
+  Minify.prototype.toggleAllProperties = function (li) {
+    var allActive = Object.values(this.properties).every((prop) => prop.active);
+
+    for (var p in this.properties) {
+      this.properties[p].active = !allActive;
+      this.properties[p].toggle.inp.checked = !allActive;
+
+      var oncls = "b5-bg";
+      if (!allActive) {
+        this.properties[p].toggle.li.classList.remove(oncls.split(/ /));
+        this.properties[p].toggle.li.classList.add("seasonal");
+        li.classList.remove(oncls.split(/ /));
+        li.classList.add("seasonal");
+      } else {
+        this.properties[p].toggle.li.classList.remove("seasonal");
+        this.properties[p].toggle.li.classList.add(oncls.split(/ /));
+        li.classList.remove("seasonal");
+        li.classList.add(oncls.split(/ /));
+      }
+    }
+
+    this.trimGeoJSON();
   };
   Minify.prototype.save = function () {
     if (!this.output) return this;
